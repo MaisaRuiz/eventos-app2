@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/estilo.css" />
+    <title>Lista de Eventos</title>
+</head>
+
+<body>
+    <div style="display: flex; justify-content: center; width: 100%;">
+        <ul
+            style="display: flex; flex-direction: row; justify-content: space-between; margin: 8px; border: solid 1px black; width: 100%; padding: 8px; list-style: none;">
+            <li><a href="eventos.html">Eventos Disponíveis</a></li>
+            <li><a href="meusEventos.html">Minha Lista de Eventos</a></li>
+            <li><a href="login.html">Sair</a>
+        </ul>
+    </div>
+
+    <h1>Eventos Disponíveis</h1>
+
+    <table id="eventosTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Data</th>
+                <th>Local</th>
+                <th>R$ ingresso</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br />
+    <br />
+
+    <h2>Minha Lista de Eventos</h2>
+    <div id="listagemEventos">
+        <ul id="minhaListaEventos">
+        </ul>
+    </div>
+
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Adicionar à Lista</h2>
+            <p id="eventoNome"></p>
+            <label for="quantidadeIngressos">Quantidade de Ingressos:</label>
+            <input type="number" id="quantidadeIngressos" name="quantidadeIngressos" min="1" required><br><br>
+            <p>Total: R$ <span id="total"></span></p>
+            <button id="confirmarAdicionar">Confirmar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const eventosTableBody = document.querySelector("#eventosTable tbody");
+            const minhaListaEventos = document.getElementById("minhaListaEventos");
+            const modal = document.getElementById("myModal");
+            const span = document.getElementsByClassName("close")[0];
+            const confirmarBtn = document.getElementById("confirmarAdicionar");
+            let eventoAtual = null;
+
+            // function loadEventos() {
+            //     const eventos = JSON.parse(localStorage.getItem("eventos")) || [];
+            //     eventosTableBody.innerHTML = "";
+            //     eventos.forEach(evento => {
+            //         const row = document.createElement("tr");
+            //         row.innerHTML = `
+            //             <td>${evento.id}</td>
+            //             <td>${evento.nome}</td>
+            //             <td>${dataNormal(evento.data)}</td>
+            //             <td>${evento.local}</td>
+            //             <td>${evento.valorIngresso}</td>
+            //             <td class="actions">
+            //                 <button onclick="adicionarALista(${evento.id})">Adicionar à Lista</button>
+            //             </td>
+            //         `;
+            //         eventosTableBody.appendChild(row);
+            //     });
+            // }
+
+            async function loadEventos() {
+                try {
+                    let response = await fetch('http://localhost:3001/evento');
+                    
+                    if (response.ok) {
+                        const eventos = await response.json();
+                        eventosTableBody.innerHTML = "";
+
+                        eventos.forEach(evento => {
+                            const row = document.createElement("tr");
+                            row.innerHTML = `
+                                <td>${evento.id}</td>
+                                <td>${evento.nome}</td>
+                                <td>${dataNormal(evento.data)}</td>
+                                <td>${evento.local}</td>
+                                <td>${evento.valorIngresso}</td>
+                                <td class="actions">
+                                    <button onclick="adicionarALista(${evento.id})">Adicionar à Lista</button>
+                                </td>
+                            `;
+
+                            eventosTableBody.appendChild(row);
+                        });
+                    } else {
+                        alert("Erro ao carregar eventos.");
+                        response.json().then(data => console.log(data.message));
+                    }
+                } catch (error) {
+                    console.error("Erro ao carregar eventos:", error);
+                    alert("Não foi possível carregar os eventos.");
+                }
+            }
+
+            // function loadMinhaLista() {
+            //     const minhaLista = JSON.parse(localStorage.getItem("minhaListaEventos")) || [];
+            //     minhaListaEventos.innerHTML = "";
+            //     minhaLista.forEach(evento => {
+            //         const li = document.createElement("li");
+            //         li.textContent = `${evento.nome} - ${evento.data} - ${evento.local} - Ingressos: ${evento.quantidade} - Total: R$ ${evento.total}`;
+            //         minhaListaEventos.appendChild(li);
+            //     });
+            // }
+
+            async function loadMinhaLista() {
+                try {
+                    const minhaListaIds = JSON.parse(localStorage.getItem("minhaListaEventos")) || [];
+
+                    if (minhaListaIds.length === 0) {
+                        minhaListaEventos.innerHTML = "<li>Nenhum evento na lista.</li>";
+                        return;
+                    }
+
+                    // Faz uma requisição à API para obter todos os eventos
+                    let response = await fetch('http://localhost:3001/evento');
+                    
+                    if (response.ok) {
+                        const eventos = await response.json();
+                        minhaListaEventos.innerHTML = "";
+
+                        // Filtra os eventos que estão na lista armazenada no localStorage
+                        const eventosNaLista = eventos.filter(evento => 
+                            minhaListaIds.some(listaItem => listaItem.id === evento.id)
+                        );
+
+                        // Atualiza o DOM com os eventos da lista
+                        eventosNaLista.forEach(evento => {
+                            const listaItem = minhaListaIds.find(item => item.id === evento.id);
+                            const li = document.createElement("li");
+                            li.textContent = `${evento.nome} - ${dataNormal(evento.data)} - ${evento.local} - 
+                                            Ingressos: ${listaItem.quantidade} - 
+                                            Total: R$ ${(listaItem.quantidade * evento.valorIngresso).toFixed(2)}`;
+                            minhaListaEventos.appendChild(li);
+                        });
+                    } else {
+                        alert("Erro ao carregar eventos.");
+                        response.json().then(data => console.log(data.message));
+                    }
+                } catch (error) {
+                    console.error("Erro ao carregar eventos:", error);
+                    alert("Não foi possível carregar os eventos.");
+                }
+            }
+
+
+            window.adicionarALista = async function (id) {
+                try {
+                    let response = await fetch('http://localhost:3001/evento');
+
+                    if (response.ok) {
+                        const eventos = await response.json();
+                        eventoAtual = eventos.find(evento => evento.id === id);
+
+                        if (eventoAtual) {
+                            document.getElementById("eventoNome").textContent = eventoAtual.nome;
+                            document.getElementById("quantidadeIngressos").value = 1;
+                            document.getElementById("total").textContent = eventoAtual.valorIngresso;
+                            modal.style.display = "block";
+                        }
+                    } else {
+                        alert("Erro ao carregar eventos.");
+                        response.json().then(data => console.log(data.message));
+                    }
+                }
+                catch (error) {
+                    console.error("Erro ao carregar eventos:", error);
+                    alert("Não foi possível carregar os eventos.");
+                }
+            };
+
+            document.getElementById("quantidadeIngressos").addEventListener("input", function () {
+                const quantidade = this.value;
+                const total = quantidade * eventoAtual.valorIngresso;
+                document.getElementById("total").textContent = total.toFixed(2);
+            });
+
+            confirmarBtn.addEventListener("click", function () {
+                const quantidade = document.getElementById("quantidadeIngressos").value;
+                const total = quantidade * eventoAtual.valorIngresso;
+
+                let minhaLista = JSON.parse(localStorage.getItem("minhaListaEventos")) || [];
+
+                if (!minhaLista.some(e => e.id === eventoAtual.id)) {
+                    minhaLista.push({
+                        id: eventoAtual.id,
+                        nome: eventoAtual.nome,
+                        data: eventoAtual.data,
+                        local: eventoAtual.local,
+                        quantidade,
+                        total: total.toFixed(2)
+                    });
+                    localStorage.setItem("minhaListaEventos", JSON.stringify(minhaLista));
+                    loadMinhaLista();
+                    modal.style.display = "none";
+                } else {
+                    alert("Este evento já está na sua lista.");
+                }
+            });
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            };
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            };
+
+            loadEventos();
+            loadMinhaLista();
+        });
+
+        function dataNormal(isoDate)
+        {
+            const dateObject = new Date(isoDate);
+
+            const year = dateObject.getFullYear();
+            const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+            const day = String(dateObject.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
+
+            return formattedDate;
+        }
+    </script>
+</body>
+
+</html>

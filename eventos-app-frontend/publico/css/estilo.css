@@ -1,0 +1,293 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilo do contêiner principal */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Estilo da caixa de login */
+.box {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Estilo dos campos de entrada */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Estilo do botão */
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo do menu de navegação */
+ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 8px;
+  border: solid 1px black;
+  width: 100%;
+  max-width: 800px;
+  padding: 8px;
+  list-style: none;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+ul li a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+ul li a:hover {
+  color: #0056b3;
+}
+
+/* Estilo da tabela de eventos */
+table {
+  width: 100%;
+  max-width: 800px;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table,
+th,
+td {
+  border: 1px solid #ccc;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #007bff;
+  color: #fff;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Estilo do formulário de cadastro de eventos */
+form {
+  max-width: 800px;
+  width: 100%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="date"],
+form input[type="number"],
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #218838;
+}
+
+/* Estilo da seção de listagem de eventos */
+#listagemEventos {
+  display: block; /* Muda de flex para block para garantir que os itens fiquem empilhados */
+  width: 100%; /* Garante que a seção ocupe toda a largura disponível */
+}
+
+/* Estilo da lista de eventos */
+#minhaListaEventos {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  width: 100%; /* Garante que a lista ocupe toda a largura do contêiner */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Estilo dos itens da lista de eventos */
+#minhaListaEventos li {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  width: 100%; /* Garante que cada item ocupe toda a largura da lista */
+  box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
+}
+
+/* Estilo do modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilo da seção de detalhes do evento */
+#eventoDetalhes {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+#eventoDetalhes p {
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #333;
+}
+
+#eventoDetalhes p strong {
+  color: #007bff;
+}
+
+/* Estilo do botão de voltar */
+button {
+  display: block;
+  width: 100px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo responsivo */
+@media (max-width: 480px) {
+  ul {
+    flex-direction: column;
+  }
+
+  #eventoDetalhes,
+  .modal-content {
+    max-width: 100%;
+  }
+
+  #eventoDetalhes p {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+    width: 80px;
+  }
+
+  ul li a {
+    font-size: 14px;
+  }
+}

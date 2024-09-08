@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/estilo.css" />
+    <title>Detalhes do Evento</title>
+</head>
+
+<body>
+    <div style="display: flex; justify-content: center; width: 100%;">
+        <ul
+            style="display: flex; flex-direction: row; justify-content: space-between; margin: 8px; border: solid 1px black; width: 100%; padding: 8px; list-style: none;">
+            <li><a href="eventos.html">Eventos Disponíveis</a></li>
+            <li><a href="meusEventos.html">Minha Lista de Eventos</a></li>
+            <li><a href="login.html">Sair</a>
+        </ul>
+    </div>
+
+    <h1 style="text-align: center;">Detalhes do Evento</h1>
+    <div id="eventoDetalhes">
+    </div>
+
+    <button onclick="voltar()">Voltar</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const eventoDetalhes = document.getElementById("eventoDetalhes");
+            const evento = JSON.parse(localStorage.getItem("eventoAtual"));
+
+            if (evento) {
+                eventoDetalhes.innerHTML = `
+                    <p><strong>ID:</strong> ${evento.id}</p>
+                    <p><strong>Nome:</strong> ${evento.nome}</p>
+                    <p><strong>Detalhes:</strong> ${evento.detalhes}</p>
+                    <p><strong>Data:</strong> ${evento.data}</p>
+                    <p><strong>Local:</strong> ${evento.local}</p>
+                    <p><strong>Número de Ingressos:</strong> ${evento.numIngressos}</p>
+                    <p><strong>Valor do Ingresso:</strong> ${evento.valorIngresso}</p>
+                `;
+            }
+        });
+
+        function voltar() {
+            window.location.href = "eventos.html";
+        }
+    </script>
+</body>
+
+</html>
